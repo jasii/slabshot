@@ -57,6 +57,11 @@ runs the game server (UDP 27500 game, 27501 browser query) and the master list
 people's browsers with the right address, set `MASTER_KEY` and
 `SLAB_PUBLIC_HOST=<public ip or hostname>`.
 
+**Komodo:** stack `slabshot` on RackNerd builds `deploy/compose.yaml` from this repo and
+publishes UDP 27500-27501 directly on the VPS (no proxy needed). To update the
+server: push to `main`, then redeploy the stack. Settings via the stack's
+environment (`SLAB_NAME`, `SLAB_MODE`, `SLAB_ROTATE`, `SLAB_MAX`, ...).
+
 **Dedicated (no Docker):** `godot --headless --path . -- --server --master=http://host:27580`
 
 **Listen server:** Host tab in the menu (optional UPnP + master listing).
