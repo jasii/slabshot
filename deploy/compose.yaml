@@ -1,0 +1,20 @@
+# Komodo stack: Slabshot dedicated server, built from this repo.
+# Players connect straight to the host's public IP on UDP 27500
+# (27501 = server-browser query port, optional).
+
+services:
+  slabshot:
+    build:
+      context: ..
+      dockerfile: docker/server.Dockerfile
+    image: slabshot-server:latest
+    container_name: slabshot
+    restart: unless-stopped
+    ports:
+      - "27500:27500/udp"
+      - "27501:27501/udp"
+    environment:
+      SLAB_NAME: ${SLAB_NAME:-Slabshot}
+      SLAB_MODE: ${SLAB_MODE:-ffa}
+      SLAB_ROTATE: ${SLAB_ROTATE:-1}
+      SLAB_MAX: ${SLAB_MAX:-16}

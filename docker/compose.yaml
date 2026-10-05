@@ -1,0 +1,37 @@
+# Slabshot: dedicated game server + master server list.
+#   docker compose -f docker/compose.yaml up -d --build
+# Open UDP 27500-27501 (game + browser query) and TCP 27580 (master) on the host.
+# Clients: Settings > Master server URL = http://<host>:27580
+
+services:
+  master:
+    build: ../master
+    image: slabshot-master
+    restart: unless-stopped
+    ports:
+      - "27580:27580/tcp"
+    environment:
+      MASTER_KEY: ${MASTER_KEY:-}
+      MASTER_TTL: "30"
+      # TRUST_PROXY: "1"   # only behind a reverse proxy you control
+
+  game:
+    build:
+      context: ..
+      dockerfile: docker/server.Dockerfile
+    image: slabshot-server
+    restart: unless-stopped
+    depends_on: [master]
+    ports:
+      - "27500:27500/udp"
+      - "27501:27501/udp"
+    environment:
+      SLAB_NAME: ${SLAB_NAME:-Slabshot}
+      SLAB_MODE: ${SLAB_MODE:-ffa}       # ffa | tdm
+      SLAB_ROTATE: ${SLAB_ROTATE:-1}     # alternate FFA / Team Slayer
+      SLAB_MAX: ${SLAB_MAX:-64}
+      SLAB_MASTER: http://master:27580
+      SLAB_MASTER_KEY: ${MASTER_KEY:-}
+      # Public hostname/IP clients should connect to. Needed here because the
+      # master sees the game server's Docker-network IP. Requires MASTER_KEY.
+      SLAB_PUBLIC_HOST: ${SLAB_PUBLIC_HOST:-}

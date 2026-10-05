@@ -1,0 +1,7 @@
+.git
+.godot
+build
+master
+docker
+tools
+*.md
