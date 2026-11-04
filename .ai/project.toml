@@ -1,0 +1,12 @@
+# Read by the conductor and agents. Edit by hand or with repo-new.
+[repo]
+name = "slabshot"
+forgejo = "projects/slabshot"
+github = "jasii/slabshot"
+remote = "both"
+primary = "github"
+created = "2026-11-03"
+
+[deploy]
+enabled = false
+komodo_stack = ""
